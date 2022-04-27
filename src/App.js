@@ -18,7 +18,8 @@ const initialSnake = [
   { x: 1, y: 9 },
   { x: 2, y: 9 },
 ]
-const initialCheckPoint = { x: 16, y: 3 };
+const initialCheckPoint = { x: 10, y: 5 };
+const initialDificulty = 3;
 
 function App() {
   const [matrix, setMatrix] = useState(emptyMatrix);
@@ -27,17 +28,24 @@ function App() {
   const [round, setRound] = useState(0);
   const [snake, setSnake] = useState(initialSnake);
   const [checkpoint, setCheckpoint] = useState(initialCheckPoint);
+  const [dificulty, setDificulty] = useState(initialDificulty);
 
   const resetGame = () => {
     setMatrix(emptyMatrix);
     setSnake(initialSnake);
     setDirection(RIGHT);
     setFinished(false);
-    setCheckpoint(initialCheckPoint)
+    setCheckpoint(initialCheckPoint);
+    setDificulty(initialDificulty);
   }
 
+  const getRandomIndex = () => (
+    Math.floor(Math.random() * (matrixSize - 1))
+  )
+
   const completeCheckpoint = () => {
-    setCheckpoint({ x: checkpoint.y, y: checkpoint.x });
+    setCheckpoint({ x: getRandomIndex(), y: getRandomIndex() });
+    setDificulty(dificulty + 0.5);
   }
 
   const verifyGameOver = (nextPosition) => {
@@ -106,7 +114,7 @@ function App() {
     if (!finished) {
       setTimeout(() => {
         setRound(round + 1);
-      }, 200);
+      }, 1000 / dificulty);
     }
   }, [snake, finished])
 
